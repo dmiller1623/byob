@@ -18,6 +18,8 @@ exports.up = function(knex, Promise) {
       table.string('pokemon_three');
       table.string('pokemon_four');
       table.string('pokemon_five');
+
+      table.timestamps(true, true)
     })
   ])
 };
