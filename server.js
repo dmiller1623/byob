@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+const data = pokedata.getPokemon()
+
+console.log(data)
+
 app.set('port', process.env.PORT || 3000);
 
 app.use(express.static('public'))

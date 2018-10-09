@@ -1,13 +1,42 @@
+const teams = require('../utilities/helper')
 
-exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
-      ]);
-    });
-};
+  const createTrainer = (knex, trainer) => {
+    return knex('trainers').insert({
+      name: trainer.name,
+      level: trainer.level
+    }, 'id')
+    .then(trainerId => {
+      let pokemonPromises = []
+
+      pokemonPromises.push(createPokemonTeam(knex, {
+        pokemon_one: trainer.pokemon[0],
+        pokemon_two: trainer.pokemon[1],
+        pokemon_three: trainer.pokemon[2],
+        pokemon_four: trainer.pokemon[3],
+        pokemon_five: trainer.pokemon[4],
+        trainer_id: trainerId[0]
+        })
+      )
+      return Promise.all(pokemonPromises)
+    })
+  }
+
+  const createPokemonTeam = (knex, pokemon) => {
+    console.log(pokemon)
+    return knex('pokemon').insert(pokemon);
+  }
+
+  exports.seed = (knex, Promise) => {
+    return knex('pokemon').del()
+    .then(() => knex('trainers').del())
+    .then(() => {
+      let pokemonPromises = [];
+
+      teams.forEach(team => {
+        pokemonPromises.push(createTrainer(knex, team))
+      })
+      return Promise.all(pokemonPromises)
+    })
+    .catch(error => console.log(`Error seeding data ${error}`))
+  }
+
