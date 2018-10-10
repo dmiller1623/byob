@@ -47,6 +47,21 @@ app.post('/api/v1/trainers', (request, response) => {
     .catch( error => response.status(500).json({ error }) )
 })
 
+app.post('/api/v1/pokemon', (request, response) => {
+  const pokemon = request.body;
+  console.log(pokemon)
+
+  for (let requiredParameter of ['trainer_id', 'pokemon_one', 'pokemon_two', 'pokemon_three','pokemon_four', 'pokemon_five']) {
+    if (!pokemon[requiredParameter]) {
+      return response.status(422).send({ error: `Expected format: { name: <String> }. You're missing a "${requiredParameter}" property.` })
+    }
+  }
+
+  database('pokemon').insert(pokemon, 'id')
+    .then( pokemon => response.status(201).json({ id: pokemon[0] }) )
+    .catch( error => response.status(500).json({ error }) )
+})
+
 
 app.listen(app.get('port'), () => {
   console.log(`server is running on ${app.get('port')}.`);
