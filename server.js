@@ -14,7 +14,7 @@ app.use(express.static('public'))
 app.locals.trainers = require('./utilities/helper')
 
 app.get('/', function (request, response) {
-  response.send('Hello World!');
+  response.send('POKEMON!');
 });
 
 app.get('/api/v1/teams', (request, response) => {
