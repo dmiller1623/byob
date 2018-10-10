@@ -23,6 +23,17 @@ app.get('/api/v1/teams', (request, response) => {
     .catch(error => response.status(500).json({ error }))
 })
 
+app.get('/api/v1/pokemon', (request, response) => {
+  database('pokemon').select()
+    .then((pokemon) => {
+      response.status(200).json(pokemon)
+    })
+
+    .catch((error) => {
+      response.status(500).json({ error })
+    })
+})
+
 app.post('/api/v1/trainers', (request, response) => {
   const trainer = request.body;
   console.log(trainer)
