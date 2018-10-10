@@ -45,7 +45,7 @@ app.get('/api/v1/trainers/:id', (request, response) => {
       response.status(200).json(trainer)
     })
     .catch((error) => {
-      response.status(500).json({ error })
+      response.status(404).json({ error })
     })
 })
 
@@ -57,7 +57,7 @@ app.get('/api/v1/pokemon/:id', (request, response) => {
     })
 
     .catch((error) => {
-      response.status(500).json({ error })
+      response.status(404).json({ error })
     })
 })
 
@@ -88,6 +88,22 @@ app.post('/api/v1/pokemon', (request, response) => {
 
   database('pokemon').insert(pokemon, 'id')
     .then( pokemon => response.status(201).json({ id: pokemon[0] }) )
+    .catch( error => response.status(500).json({ error }) )
+})
+
+app.patch('/api/v1/trainers/:id', (request, response) => {
+  console.log(request.body)
+  const id = request.params.id;
+  database('trainers').where('id', id).update('name', request.body.name)
+    .then( trainer => response.status(204).json({ id: trainer[0] }))
+    .catch( error => response.status(500).json({ error }) )
+})
+
+app.patch('/api/v1/trainer-levels/:id', (request, response) => {
+  console.log(request.body)
+  const id = request.params.id;
+  database('trainers').where('id', id).update('level', request.body.level)
+    .then( trainer => response.status(204).json({ id: trainer[0] }))
     .catch( error => response.status(500).json({ error }) )
 })
 
