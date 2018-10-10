@@ -38,4 +38,3 @@ const teams = require('../../../utilities/helper')
     })
     .catch(error => console.log(`Error seeding data ${error}`))
   }
-
