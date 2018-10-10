@@ -17,7 +17,7 @@ app.get('/', function (request, response) {
   response.send('Hello World!');
 });
 
-app.get('/api/v1/trainers', (request, response) => {
+app.get('/api/v1/teams', (request, response) => {
   database('trainers').select()
     .then(response.status(200).json(app.locals.trainers))
     .catch(error => response.status(500).json({ error }))
