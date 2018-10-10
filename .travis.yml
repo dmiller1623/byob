@@ -1,10 +1,15 @@
 language: node_js
 node_js:
-  - "node"
+- node
 services:
-  - postgresql
-
+- postgresql
 before_script:
-  - psql -c 'create database pokemon_test;' -U postgres
+- psql -c 'create database pokemon_test;' -U postgres
 notfications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: nZ9GnEYfQkWdKW290pltjMJU+XFayTwoEaXjO1ifKSz3lc4x5YSyHR5A4Wgiyf/QFkVWFuChQkJskf6y+vY3ibBOQkiDtXfcgnv3BviR72KVb15QiL9nTiht4Ohrx3W7Mm2k/U9Hjcnzoonp49O3i/rX22yHywXwTV5QH2rQ+qiEMJpmmgElhkyIKK5ehB+L7ySyC70Kn2ZeCpkVYah1F3SCylD+/WhwSfxPsMjK835ggAsHmzglNpkzllDKq2RK9ylDwxtZdpOlOK64Lfo4YirnYRa0d6SxhBJZm+fUKuJ0nvvQkxfsegxfWhf5/ue7JT0ZurUuKoauZ+sQjQEpZcjoVGz8c0Wgf78KEvYjVRDDc4iVYXxXljar4b9SL4t2xx0306rtWnGbjOGirjZfAUaA+PYx+4LG6VSfaIIm9ssQ6FWfdU0i9onAi5XoPygJp0EOQVUstnBSbEmsMUCYx22PFRszDCE/QFWXAr4YoPf41t0TLgEeN+AotWh+EUsmodw90myWwHOa+HeDi7ND7nYNsP/F6PcDOuFYEL7o+wai/cazZTzD47NTjQQSzjLuEax/Na8u2Td/brGUPw6YeDqkLRONpoG1/f3NygqOhLN/FTDNXtHtdoRlMvXhe9DfheHEGcmFUcUKU8zdOEctRZ8uri3iFAAyr/GCcDCDWWw=
+  app: byopokemon 
+  skip_cleanup: true
