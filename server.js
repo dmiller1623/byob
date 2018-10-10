@@ -7,7 +7,15 @@ const environment = process.env.NODE_ENV || 'development'
 const configuration = require('./knexfile')[environment]
 const database = require('knex')(configuration)
 
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
+
+const bodyParser = require('body-parser');
+
+
 app.set('port', process.env.PORT || 3000);
+app.use(bodyParser.json());
 
 app.use(bodyParser.json())
 app.use(express.static('public'))
@@ -39,8 +47,9 @@ app.post('/api/v1/trainers', (request, response) => {
     .catch( error => response.status(500).json({ error }) )
 })
 
+
 app.listen(app.get('port'), () => {
   console.log(`server is running on ${app.get('port')}.`);
 });
 
-module.exports = { app, database }
+module.exports = {app, database};

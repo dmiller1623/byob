@@ -1,5 +1,3 @@
-// Update with your config settings.
-
 module.exports = {
 
   development: {
@@ -14,11 +12,11 @@ module.exports = {
       useNullAsDefault: true
   },
 
-  testing: {
+  test: {
     client: 'pg',
-    connection: 'postgres://localhost/pokemon',
+    connection: 'postgres://localhost/pokemon_test',
     migrations: {
-      directory: '.db/migrations'
+      directory: 'db/migrations'
     }, 
     seeds: {
       directory: '/db/seeds/test' 
