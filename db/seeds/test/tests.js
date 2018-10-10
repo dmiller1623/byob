@@ -22,7 +22,6 @@ const teams = require('../utilities/helper')
   }
 
   const createPokemonTeam = (knex, pokemon) => {
-    console.log(pokemon)
     return knex('pokemon').insert(pokemon);
   }
 
@@ -39,4 +38,3 @@ const teams = require('../utilities/helper')
     })
     .catch(error => console.log(`Error seeding data ${error}`))
   }
-
