@@ -38,7 +38,7 @@ app.post('/api/v1/trainers', (request, response) => {
 
   for (let requiredParameter of ['name', 'level']) {
     if (!trainer[requiredParameter]) {
-      return response.status(422).send({ error: `Expected format: { name: <String> }. You're missing a "${requiredParameter}" property.` })
+      return response.status(422).send({ error: `Expected format: { name: <String>, level: <Number> }. You're missing a "${requiredParameter}" property.` })
     }
   }
 
@@ -53,7 +53,7 @@ app.post('/api/v1/pokemon', (request, response) => {
 
   for (let requiredParameter of ['trainer_id', 'pokemon_one', 'pokemon_two', 'pokemon_three','pokemon_four', 'pokemon_five']) {
     if (!pokemon[requiredParameter]) {
-      return response.status(422).send({ error: `Expected format: { name: <String> }. You're missing a "${requiredParameter}" property.` })
+      return response.status(422).send({ error: `Expected format: { trainer_id: <Number>, pokemon_one: <String>, pokemon_two: <String>, pokemon_three: <String>, pokemon_four: <String>, pokemon_five: <String> }. You're missing a "${requiredParameter}" property.` })
     }
   }
 
