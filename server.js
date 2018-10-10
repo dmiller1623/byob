@@ -17,7 +17,7 @@ app.get('/', function (request, response) {
   response.send('POKEMON!');
 });
 
-app.get('/api/v1/teams', (request, response) => {
+app.get('/api/v1/trainers', (request, response) => {
   database('trainers').select()
     .then((trainers) => {
       response.status(200).json(trainers)
@@ -63,7 +63,6 @@ app.get('/api/v1/pokemon/:id', (request, response) => {
 
 app.post('/api/v1/trainers', (request, response) => {
   const trainer = request.body;
-  console.log(trainer)
 
   for (let requiredParameter of ['name', 'level']) {
     if (!trainer[requiredParameter]) {
@@ -78,7 +77,6 @@ app.post('/api/v1/trainers', (request, response) => {
 
 app.post('/api/v1/pokemon', (request, response) => {
   const pokemon = request.body;
-  console.log(pokemon)
 
   for (let requiredParameter of ['trainer_id', 'pokemon_one', 'pokemon_two', 'pokemon_three','pokemon_four', 'pokemon_five']) {
     if (!pokemon[requiredParameter]) {
@@ -92,7 +90,6 @@ app.post('/api/v1/pokemon', (request, response) => {
 })
 
 app.patch('/api/v1/trainers/:id', (request, response) => {
-  console.log(request.body)
   const id = request.params.id;
   database('trainers').where('id', id).update('name', request.body.name)
     .then( trainer => response.status(204).json({ id: trainer[0] }))
@@ -100,11 +97,28 @@ app.patch('/api/v1/trainers/:id', (request, response) => {
 })
 
 app.patch('/api/v1/trainer-levels/:id', (request, response) => {
-  console.log(request.body)
   const id = request.params.id;
   database('trainers').where('id', id).update('level', request.body.level)
     .then( trainer => response.status(204).json({ id: trainer[0] }))
     .catch( error => response.status(500).json({ error }) )
+})
+
+app.delete('/api/v1/pokemon/:id', (request, response) => {
+  const id = request.params.id;
+  database('pokemon').where('id', id).delete()
+    .then(trainer => response.status(202).json({ id }))
+    .catch(error => response.status(500).json({ error }))
+})
+
+app.delete('/api/v1/trainers/:id', (request, response) => {
+  const id = request.params.id;
+  database('pokemon').where('trainer_id', id).delete()
+    // .then(trainer => response.status(202).json({ id }))
+    .catch(error => response.status(500).json({ error }))
+
+  database('trainers').where('id', id).delete()
+    .then(trainer => response.status(202).json({ id }))
+    .catch(error => response.status(500).json({ error }))
 })
 
 
