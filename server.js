@@ -19,14 +19,41 @@ app.get('/', function (request, response) {
 
 app.get('/api/v1/teams', (request, response) => {
   database('trainers').select()
-    .then(response.status(200).json(app.locals.trainers))
-    .catch(error => response.status(500).json({ error }))
+    .then((trainers) => {
+      response.status(200).json(trainers)
+    })
+    .catch((error) => {
+      response.status(500).json({ error })
+    })
 })
 
 app.get('/api/v1/pokemon', (request, response) => {
   database('pokemon').select()
     .then((pokemon) => {
       response.status(200).json(pokemon)
+    })
+
+    .catch((error) => {
+      response.status(500).json({ error })
+    })
+})
+
+app.get('/api/v1/trainers/:id', (request, response) => {
+  const id = request.params.id
+  database('trainers').where('id', id).select()
+    .then((trainer) => {
+      response.status(200).json(trainer)
+    })
+    .catch((error) => {
+      response.status(500).json({ error })
+    })
+})
+
+app.get('/api/v1/pokemon/:id', (request, response) => {
+  const id = request.params.id
+  database('pokemon').where('id', id).select()
+    .then((team) => {
+      response.status(200).json(team)
     })
 
     .catch((error) => {
