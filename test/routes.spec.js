@@ -105,7 +105,7 @@ describe('api routes', () => {
     })
   })
 
-  it.only('should add a trainer to the database', (done) => {
+  it('should add a trainer to the database', (done) => {
     chai.request(app)
     .post('/api/v1/trainers')
     .send({
@@ -119,6 +119,30 @@ describe('api routes', () => {
       done()
     })
   })
+
+  it('should add a team of pokemon assigned to a trainer', (done) => {
+    chai.request(app)
+    .post('/api/v1/pokemon')
+    .send({
+      trainer_id: 1,
+      pokemon_one: "Geodude",
+      pokemon_two: "Raichu",
+      pokemon_three: "Electabuzz",
+      pokemon_four: "Dratini",
+      pokemon_five: "Dragonite"
+    })
+    .end((err, response) => {
+      response.should.have.status(201)
+      response.body.should.have.property('id')
+      response.body.id.should.equal(30)
+      done()
+    })
+  })
+
+  // it('should update the trainer level', (done) => {
+  //   chai.request(app)
+  //   .patch()
+  // })
 
   describe('client routes', () => {
     it('should return a happy path', (done) => {
