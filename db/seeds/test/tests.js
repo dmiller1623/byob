@@ -1,4 +1,4 @@
-const teams = require('../utilities/helper')
+const teams = require('../../../utilities/helper')
 
   const createTrainer = (knex, trainer) => {
     return knex('trainers').insert({

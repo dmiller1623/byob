@@ -11,8 +11,6 @@ app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
 app.use(express.static('public'))
 
-app.locals.trainers = require('./utilities/helper')
-
 app.get('/', function (request, response) {
   response.send('POKEMON!');
 });
@@ -20,21 +18,21 @@ app.get('/', function (request, response) {
 app.get('/api/v1/trainers', (request, response) => {
   database('trainers').select()
     .then((trainers) => {
-      response.status(200).json(trainers)
+      return response.status(200).json(trainers)
     })
     .catch((error) => {
-      response.status(500).json({ error })
+      return response.status(500).json({ error })
     })
 })
 
 app.get('/api/v1/pokemon', (request, response) => {
   database('pokemon').select()
     .then((pokemon) => {
-      response.status(200).json(pokemon)
+      return response.status(200).json(pokemon)
     })
 
     .catch((error) => {
-      response.status(500).json({ error })
+      return response.status(500).json({ error })
     })
 })
 
@@ -42,10 +40,10 @@ app.get('/api/v1/trainers/:id', (request, response) => {
   const id = request.params.id
   database('trainers').where('id', id).select()
     .then((trainer) => {
-      response.status(200).json(trainer)
+      return response.status(200).json(trainer)
     })
     .catch((error) => {
-      response.status(404).json({ error })
+      return response.status(404).json({ error })
     })
 })
 
@@ -53,11 +51,11 @@ app.get('/api/v1/pokemon/:id', (request, response) => {
   const id = request.params.id
   database('pokemon').where('id', id).select()
     .then((team) => {
-      response.status(200).json(team)
+      return response.status(200).json(team)
     })
 
     .catch((error) => {
-      response.status(404).json({ error })
+      return -response.status(404).json({ error })
     })
 })
 
@@ -126,4 +124,4 @@ app.listen(app.get('port'), () => {
   console.log(`server is running on ${app.get('port')}.`);
 });
 
-module.exports = {app, database};
+module.exports = { app, database };
