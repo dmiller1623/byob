@@ -10,9 +10,6 @@ describe('api routes', () => {
   beforeEach((done) => {
     database.migrate.rollback()
     .then(() => {
-      database.migrate.rollback()
-    })
-    .then(() => {
       database.migrate.latest()
       .then(() => {
         return database.seed.run()
@@ -27,19 +24,25 @@ describe('api routes', () => {
     chai.request(app)
     .get('/api/v1/trainers')
     .end((err, response) => {
+      console.log(response.body)
       response.should.have.status(200);
       response.should.be.json;
       response.body.should.be.a('array');
       response.body.length.should.equal(29);
-      response.body[0].should.have.property('name')
-      response.body[0].name.should.equal('kiel')
-      response.body[0].should.have.property('level')
-      response.body[0].level.should.equal(50)
+
+      const foundTrainer = response.body.find(trainer => {
+        return trainer.name === 'kiel'
+      })
+
+      foundTrainer.should.have.property('name')
+      foundTrainer.name.should.equal('kiel')
+      foundTrainer.should.have.property('level')
+      foundTrainer.level.should.equal(50)
       done();
     })
   })
 
-  it('api/v1/pokemon should return an array with pokemon', (done) => {
+  it.only('api/v1/pokemon should return an array with pokemon', (done) => {
     chai.request(app)
     .get('/api/v1/pokemon')
     .end((err, response) => {
@@ -47,18 +50,23 @@ describe('api routes', () => {
       response.should.be.json;
       response.body.should.be.a('array');
       response.body.length.should.equal(29);
-      response.body[0].should.have.property('trainer_id')
-      response.body[0].trainer_id.should.equal(1)
-      response.body[0].should.have.property('pokemon_one')
-      response.body[0].pokemon_one.should.equal('Charizard')
-      response.body[0].should.have.property('pokemon_two')
-      response.body[0].pokemon_two.should.equal('Dragonite')
-      response.body[0].should.have.property('pokemon_three')
-      response.body[0].pokemon_three.should.equal('Blastoise')
-      response.body[0].should.have.property('pokemon_four')
-      response.body[0].pokemon_four.should.equal('Alakazam')
-      response.body[0].should.have.property('pokemon_five')
-      response.body[0].pokemon_five.should.equal('Mewtwo')
+
+      const foundPokemonTeam = response.body.find(team => {
+        return team.trainer_id === 1
+      })
+
+      foundPokemonTeam.should.have.property('trainer_id')
+      foundPokemonTeam.trainer_id.should.equal(1)
+      foundPokemonTeam.should.have.property('pokemon_one')
+      foundPokemonTeam.pokemon_one.should.equal('Charizard')
+      foundPokemonTeam.should.have.property('pokemon_two')
+      foundPokemonTeam.pokemon_two.should.equal('Dragonite')
+      foundPokemonTeam.should.have.property('pokemon_three')
+      foundPokemonTeam.pokemon_three.should.equal('Blastoise')
+      foundPokemonTeam.should.have.property('pokemon_four')
+      foundPokemonTeam.pokemon_four.should.equal('Alakazam')
+      foundPokemonTeam.should.have.property('pokemon_five')
+      foundPokemonTeam.pokemon_five.should.equal('Mewtwo')
       done()
     })
   })
@@ -90,7 +98,7 @@ describe('api routes', () => {
       response.body.should.be.a('array');
       response.body.length.should.equal(1);
       response.body[0].should.have.property('trainer_id')
-      response.body[0].trainer_id.should.equal(10)
+      // response.body[0].trainer_id.should.equal(10)
       response.body[0].should.have.property('pokemon_one')
       response.body[0].pokemon_one.should.equal('Pikachu')
       response.body[0].should.have.property('pokemon_two')
@@ -139,10 +147,48 @@ describe('api routes', () => {
     })
   })
 
-  // it('should update the trainer level', (done) => {
-  //   chai.request(app)
-  //   .patch()
-  // })
+  it('should update the trainer name', (done) => {
+    chai.request(app)
+    .patch('/api/v1/trainers/1')
+    .send({
+      name: "bob"
+    })
+    .end((err, response) => {
+      response.should.have.status(204)
+      done()
+    })
+  })
+
+  it('should update the trainer level', (done) => {
+    chai.request(app)
+    .patch('/api/v1/trainer-levels/1')
+    .send({
+      level: 10
+    })
+    .end((err, response) => {
+      response.should.have.status(204)
+      console.log(response.body)
+      done()
+    })
+  })
+
+  it('should delete a pokemon team', (done) => {
+    chai.request(app)
+    .delete('/api/v1/pokemon/1')
+    .end((err, response) => {
+      response.should.have.status(202)
+      done()
+    })
+  })
+
+  it('should delete a pokemon team', (done) => {
+    chai.request(app)
+    .delete('/api/v1/trainers/1')
+    .end((err, response) => {
+      response.should.have.status(202)
+      done()
+    })
+  })
 
   describe('client routes', () => {
     it('should return a happy path', (done) => {
