@@ -67,7 +67,6 @@ describe('api routes', () => {
     chai.request(app)
     .get('/api/v1/trainers/3')
     .end((err, response) => {
-      console.log(response.body)
       response.should.have.status(200)
       response.should.be.json;
       response.body.should.be.a('array');
@@ -80,9 +79,44 @@ describe('api routes', () => {
       response.body[0].level.should.equal(50)
       done()
     })
+  })
 
-    it('api/v1/pokemon/:id should return a specific pokemon team', (done) => {
-      chai.re
+  it('api/v1/pokemon/:id should return a specific pokemon team', (done) => {
+    chai.request(app)
+    .get('/api/v1/pokemon/10')
+    .end((err, response) => {
+      response.should.have.status(200)
+      response.should.be.json;
+      response.body.should.be.a('array');
+      response.body.length.should.equal(1);
+      response.body[0].should.have.property('trainer_id')
+      response.body[0].trainer_id.should.equal(10)
+      response.body[0].should.have.property('pokemon_one')
+      response.body[0].pokemon_one.should.equal('Pikachu')
+      response.body[0].should.have.property('pokemon_two')
+      response.body[0].pokemon_two.should.equal('Mew')
+      response.body[0].should.have.property('pokemon_three')
+      response.body[0].pokemon_three.should.equal('Gyrados')
+      response.body[0].should.have.property('pokemon_four')
+      response.body[0].pokemon_four.should.equal('Abra')
+      response.body[0].should.have.property('pokemon_five')
+      response.body[0].pokemon_five.should.equal('Pidgey')
+      done()
+    })
+  })
+
+  it.only('should add a trainer to the database', (done) => {
+    chai.request(app)
+    .post('/api/v1/trainers')
+    .send({
+      name: "ronald",
+      level: 1
+    })
+    .end((err, response) => {
+      response.should.have.status(201)
+      response.body.should.have.property('id')
+      response.body.id.should.equal(30)
+      done()
     })
   })
 
