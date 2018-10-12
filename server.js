@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
@@ -18,7 +18,10 @@ app.get('/', function (request, response) {
 app.get('/api/v1/trainers', (request, response) => {
   database('trainers').select()
     .then((trainers) => {
-      return response.status(200).json(trainers)
+      if(trainers.length){
+        return response.status(200).json(trainers)
+      }
+      return response.status(404).json({ message: 'could not find all the trainers'})
     })
     .catch((error) => {
       return response.status(500).json({ error })
@@ -28,7 +31,10 @@ app.get('/api/v1/trainers', (request, response) => {
 app.get('/api/v1/pokemon', (request, response) => {
   database('pokemon').select()
     .then((pokemon) => {
-      return response.status(200).json(pokemon)
+      if(pokemon.length) {
+        return response.status(200).json(pokemon)
+      }
+      return response.status(404).json({ message: 'could not find all the pokemon'})
     })
 
     .catch((error) => {
@@ -40,10 +46,13 @@ app.get('/api/v1/trainers/:id', (request, response) => {
   const id = request.params.id
   database('trainers').where('id', id).select()
     .then((trainer) => {
-      return response.status(200).json(trainer)
+      if(trainer.length) {
+        return response.status(200).json(trainer)
+      }
+      return response.status(404).json({ message: 'could not find trainer'})
     })
     .catch((error) => {
-      return response.status(404).json({ error })
+      return response.status(500).json({ error })
     })
 })
 
@@ -51,11 +60,14 @@ app.get('/api/v1/pokemon/:id', (request, response) => {
   const id = request.params.id
   database('pokemon').where('id', id).select()
     .then((team) => {
-      return response.status(200).json(team)
+      if(team.length) {
+        return response.status(200).json(team)
+      }
+      return response.status(404).json({ message: 'could not find pokemon team'})
     })
 
     .catch((error) => {
-      return -response.status(404).json({ error })
+      return response.status(500).json({ error })
     })
 })
 
@@ -104,18 +116,28 @@ app.patch('/api/v1/trainer-levels/:id', (request, response) => {
 app.delete('/api/v1/pokemon/:id', (request, response) => {
   const id = request.params.id;
   database('pokemon').where('id', id).delete()
-    .then(trainer => response.status(202).json({ id }))
+    .then(pokemon => {
+      if(pokemon) {
+        return response.status(200).json({ id })
+      }
+      return response.status(404).json({ message: 'could not find that pokemon team to delete'})
+    })
+    
     .catch(error => response.status(500).json({ error }))
 })
 
 app.delete('/api/v1/trainers/:id', (request, response) => {
   const id = request.params.id;
   database('pokemon').where('trainer_id', id).delete()
-    // .then(trainer => response.status(202).json({ id }))
     .catch(error => response.status(500).json({ error }))
 
   database('trainers').where('id', id).delete()
-    .then(trainer => response.status(202).json({ id }))
+    .then(trainerId => {
+      if(trainerId) {
+        return response.status(200).json({ id })
+      }
+      return response.status(404).json({ message: 'could not find that trainer to delete'})
+    })
     .catch(error => response.status(500).json({ error }))
 })
 
