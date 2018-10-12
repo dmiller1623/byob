@@ -3,13 +3,13 @@ module.exports = {
   development: {
     client: 'pg',
     connection: 'postgres://localhost/pokemon',
-      migrations: {
-        directory: 'db/migrations'
-      },
-      seeds: {
-        directory: 'db/seeds/dev'
-      },
-      useNullAsDefault: true
+    migrations: {
+      directory: 'db/migrations'
+    },
+    seeds: {
+      directory: 'db/seeds/dev'
+    },
+    useNullAsDefault: true
   },
 
   test: {
