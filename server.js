@@ -16,17 +16,33 @@ app.get('/', function (request, response) {
 });
 
 app.get('/api/v1/trainers', (request, response) => {
-  database('trainers').select()
-    .then((trainers) => {
-      if (trainers.length){
-        return response.status(200).json(trainers);
-      }
-      return response.status(404).json({ message: 'could not find all the trainers'});
-    })
-    .catch((error) => {
-      return response.status(500).json({ error });
-    });
+  let levelQuery = request.query.level;
+  if (!levelQuery) {
+    database('trainers').select()
+      .then((trainers) => {
+        if (trainers.length){
+          return response.status(200).json(trainers);
+        }
+        return response.status(404).json({ message: 'could not find all the trainers'});
+      })
+      .catch((error) => {
+        return response.status(500).json({ error });
+      });    
+  } else {
+    database('trainers').where('level', levelQuery).select()
+      .then((trainers) => {
+        if (trainers.length){
+          return response.status(200).json(trainers);
+        }
+        return response.status(404).json({ message: `could not find any trainers with the level of ${levelQuery}`});
+      })
+      .catch((error) => {
+        return response.status(500).json({ error });
+      });
+  }
 });
+
+
 
 app.get('/api/v1/pokemon', (request, response) => {
   database('pokemon').select()
