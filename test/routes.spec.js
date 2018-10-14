@@ -50,6 +50,30 @@ describe('api routes', () => {
       });
   });
 
+  it('/api/v1/trainers?level=49 should return the trainers with the level specified', (done) => {
+    chai.request(app)
+      .get('/api/v1/trainers?level=49')
+      .end((err, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('name');
+        response.body[0].name.should.equal('dennis');
+        response.body[0].should.have.property('level');
+        response.body[0].level.should.equal(49);
+      });
+    done();
+  });
+
+  it('/api/v1/trainers?level=999 should return an error if no trainers are found at that level', () => {
+    chai.request(app)
+      .get('/api/v1/trainers?level=999')
+      .end((err, response) => {
+        response.should.have.status(404);
+      });
+  });
+
   it('api/v1/pokemon should return an array with pokemon', (done) => {
     chai.request(app)
       .get('/api/v1/pokemon')
