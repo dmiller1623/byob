@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const cors = require('cors')
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
@@ -8,6 +9,7 @@ const database = require('knex')(configuration);
 
 app.set('port', process.env.PORT || 3000);
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -103,7 +105,6 @@ app.post('/api/v1/trainers', (request, response) => {
 
 app.post('/api/v1/pokemon', (request, response) => {
   const pokemon = request.body;
-
   for (let requiredParameter of ['trainer_id', 'pokemon_one', 'pokemon_two', 'pokemon_three', 'pokemon_four', 'pokemon_five']) {
     if (!pokemon[requiredParameter]) {
       return response.status(422).send({ error: `Expected format: { trainer_id: <Number>, pokemon_one: <String>, pokemon_two: <String>, pokemon_three: <String>, pokemon_four: <String>, pokemon_five: <String> }. You're missing a "${requiredParameter}" property.` });
