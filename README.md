@@ -1,4 +1,4 @@
-# byob
+### byob
 
 * GET - All Trainers - ```/api/v1/trainers```
 
