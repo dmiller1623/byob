@@ -1,8 +1,15 @@
-### byob
+# Build Your Own Pokémon API
+---
+**Table of Contents**
+* [Trainers](#trainers)
+* [Pokémon](#pokémon)
 
-* GET - All Trainers - ```/api/v1/trainers```
+---
 
-Hitting this endpoint will return an array of all trainers objects
+## Trainers
+* **GET** - All Trainers - ```/api/v1/trainers```
+
+Hitting this endpoint will return an array of all trainers.
 
 ##### Example Response
 ```
@@ -20,10 +27,90 @@ Hitting this endpoint will return an array of all trainers objects
   ...
 ]
 ```
+* **GET** - All trainers at a certain level - ```api/v1/trainers?level=:level```
 
-* GET - All Pokemon - ```/api/v1/pokemon```
+Hitting this enpoint will return an array of trainers at a certain level.
 
-Hitting this endpoint will return an array of all the team of pokemon objects
+##### Example Response
+```
+[
+  {
+    id: 1,
+    name: 'Kiel',
+    level: '1'
+  },
+  {
+    id: 2,
+    name: 'Dennis',
+    level: '1'
+  }
+  ...
+]
+```
+    
+* **GET** - Trainer by id - ```/api/v1/trainers/:id```
+
+Hitting this endpoint will return one trainer.
+
+##### Example Response
+
+```
+{
+  id: 2,
+  name: 'Dennis',
+  level: '2'
+}
+```
+* **DELETE** - Trainer by id - ```api/v1/trainers/:id```
+
+##### Example endpoint  
+```
+api/v1/trainers/1
+```
+
+* **PATCH** - Edit trainer name - ```api/v1/trainers/:id```
+
+#### Example endpoint
+```
+/api/v1/trainers/43
+```
+
+##### Example request object
+```
+{
+  name: 'Dennis'
+}
+```
+
+* **PATCH** - Edit trainer level - ```api/v1/trainer-levels/:id```
+
+#### Example endpoint
+```
+/api/v1/trainer-levels/43
+```
+
+##### Example request object
+```
+{
+  level: 5
+}
+```
+
+* **POST** - Add new trainer - ```api/v1/trainers```
+
+##### Example request object
+```
+{
+  name: 'Dennis',
+  level: 5
+}
+```
+
+## Pokémon
+
+* **GET** - All Pokémon - ```/api/v1/pokemon```
+
+Hitting this endpoint will return an array of all the Pokémon.
 
 ##### Example Response
 ```
@@ -49,45 +136,10 @@ Hitting this endpoint will return an array of all the team of pokemon objects
   ...
 ]
 ```
-    
-* GET - All trainers at a certain level - ```api/v1/trainers?level=:level```
 
-Hitting this enpoint will return an array of trainers at a certain level
+* **GET** - Pokémon by id - ```/api/v1/pokemon/:id```
 
-##### Example Response
-```
-[
-  {
-    id: 1,
-    name: 'Kiel',
-    level: '1'
-  },
-  {
-    id: 2,
-    name: 'Dennis',
-    level: '1'
-  }
-  ...
-]
-```
-    
-* GET - Trainer by id - ```/api/v1/trainers/:id```
-
-Hitting this endpoint will return one trainer object
-
-##### Example Response
-
-```
-{
-  id: 2,
-  name: 'Dennis',
-  level: '2'
-}
-```
-
-* GET - Pokemon by id - ```/api/v1/pokemon/:id```
-
-Hitting this endpoint will return one pokemon object
+Hitting this endpoint will return one Pokémon.
 
 ##### Example Response
 
@@ -103,30 +155,14 @@ Hitting this endpoint will return one pokemon object
 }
 ```
 
-* DELETE - Trainer by id - ```api/v1/trainers/:id```
+* **DELETE** - Pokémon by id - ```api/v1/pokemon/:id```
 
 ##### Example endpoint
-
-`api/v1/trainers/1`
-
-
-* DELETE - Pokemon by id - ```api/v1/pokemon/:id```
-
-##### Example endpoint
-
-`api/v1/pokemon/1`
-
-* POST - Add new trainer - ```api/v1/trainers```
-
-##### Example request object
 ```
-{
-  name: 'Dennis',
-  level: 5
-}
+api/v1/pokemon/1
 ```
 
-* POST - Add new pokemon - ```api/v1/pokemon```
+* **POST** - Add new Pokémon - ```api/v1/pokemon```
 
 ##### Example request object
 ```
@@ -137,31 +173,5 @@ Hitting this endpoint will return one pokemon object
   pokemon_three: [imgUrl],
   pokemon_four: [imgUrl],
   pokemon_five: [imgUrl]
-}
-```
-
-* PATCH - Edit trainer name - ```api/v1/trainers/:id```
-
-#### Example endpoint
-
-`/api/v1/trainers/43'
-
-##### Example request object
-```
-{
-  name: 'Dennis'
-}
-```
-
-* PATCH - Edit trainer level - ```api/v1/trainer-levels/:id```
-
-#### Example endpoint
-
-`/api/v1/trainer-levels/43'
-
-##### Example request object
-```
-{
-  level: 5
 }
 ```
