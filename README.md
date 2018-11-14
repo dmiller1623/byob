@@ -1,5 +1,10 @@
 # Build Your Own Pokémon API
 ---
+
+# About
+
+Byob is the backend part of this project to support the frontend. It's meant for storing all the Pokemon trainers and the Pokemon teams built using the app.
+
 **Table of Contents**
 * [Trainers](#trainers)
 * [Pokémon](#pokémon)
