@@ -7,7 +7,7 @@ Byob is the backend part of this project to support the frontend. It's meant for
 
 ## Tech Stack
 * Node.js 
-* Espress 
+* Express 
 * Knex
 * Tested with Chai and Mocha
 
